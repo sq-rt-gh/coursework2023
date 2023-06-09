@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Forms;
 
 namespace ClientApp
@@ -9,7 +7,7 @@ namespace ClientApp
     {
         public string Sql = null;
 
-        private string funcName;
+        private string procedure;
         private Control[] args;
         private bool[] isString;
 
@@ -40,7 +38,7 @@ namespace ClientApp
             Label label2 = new Label();
             MaskedTextBox psprtMaskedTextBox = new MaskedTextBox();
 
-            funcName = "add_passenger";
+            procedure = "add_passenger";
             args = new Control[] {fullNameTextBox, psprtMaskedTextBox};
             isString = new bool[] { true, true };
                         
@@ -104,7 +102,7 @@ namespace ClientApp
             System.Windows.Forms.TextBox textBox1 = new System.Windows.Forms.TextBox();
             System.Windows.Forms.TextBox textBox2 = new System.Windows.Forms.TextBox();
 
-            funcName = "add_plane";
+            procedure = "add_plane";
             args = new Control[] { textBox1, textBox2 };
             isString = new bool[] { true, false };
 
@@ -185,7 +183,7 @@ namespace ClientApp
             dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
 
 
-            funcName = "add_flight";
+            procedure = "add_flight";
             args = new Control[] { textBox1, textBox2, dateTimePicker1, dateTimePicker2, textBox3, textBox4 };
             isString = new bool[] { true, true, true, true, false, false };
 
@@ -335,7 +333,7 @@ namespace ClientApp
             textBox2 = new System.Windows.Forms.TextBox();
             textBox3 = new System.Windows.Forms.TextBox();
 
-            funcName = "buy_ticket";
+            procedure = "buy_ticket";
             args = new Control[] { textBox1, textBox2, textBox3 };
             isString = new bool[] { false, false, true };
 
@@ -439,7 +437,7 @@ namespace ClientApp
                     _args[i] = args[i].Text;
             }
 
-            Sql = "select " + funcName + "(" + string.Join(",", _args) + ");";
+            Sql = "call " + procedure + "(" + string.Join(",", _args) + ");";
             
             DialogResult = DialogResult.OK;
             Close();

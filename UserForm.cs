@@ -1,12 +1,6 @@
 ﻿using Npgsql;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ClientApp
@@ -125,7 +119,7 @@ namespace ClientApp
                 if (DialogResult.Yes == MessageBox.Show(info, "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question))
                 {
                     int flightId = (int)dgvMain.SelectedCells[0].Value;
-                    ExecuteNonQuery($"select buy_ticket({flightId}, {user.Id}, 'via app');");
+                    ExecuteNonQuery($"call buy_ticket({flightId}, {user.Id}, 'via app');");
                     RefreshDGVs();
                 }
             }
@@ -186,6 +180,6 @@ namespace ClientApp
         {
             FilterDgvMain();
         }
-
+        
     }
 }
