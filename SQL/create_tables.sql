@@ -1,11 +1,11 @@
-CREATE TABLE planes --информация о самолетах
+CREATE TABLE planes 
 (
     id SERIAL NOT NULL PRIMARY KEY,    
 	model VARCHAR(40),
     seats INT CHECK(seats > 0)    
 );
 -------------------------------------------
-CREATE TABLE flights --расписание полетов
+CREATE TABLE flights 
 (
     id SERIAL NOT NULL PRIMARY KEY,    
 	departure_city VARCHAR(40),
@@ -23,14 +23,12 @@ CREATE TABLE passengers
     id SERIAL NOT NULL PRIMARY KEY,
     fio VARCHAR(100) NOT NULL,
     passport VARCHAR(15)
-    --phone_number VARCHAR(15),
-    --email VARCHAR(40)
 );
 -------------------------------------------
-CREATE TABLE tickets --покупка/возврат билетов
+CREATE TABLE tickets 
 (
     id SERIAL NOT NULL PRIMARY KEY,
-	payment_method VARCHAR(20), --cash/credit card/google pay
+	payment_method VARCHAR(20), 
 	purchase_time TIMESTAMP,
     flight_id INT,    
     CONSTRAINT FK_ticket_flight FOREIGN KEY(flight_id) REFERENCES flights(id),
@@ -42,13 +40,26 @@ CREATE TABLE tickets --покупка/возврат билетов
 
 --------------------------------------------------------------------------------------------------------------------------
 
-CREATE UNIQUE INDEX unique_passport_index ON passengers (passport)
+CREATE INDEX planes_model_index ON planes (model);
+CREATE UNIQUE INDEX unique_passport_index ON passengers (passport);
+CREATE UNIQUE INDEX unique_flights_index ON flights(departure_city, arrival_city, departure_time, 
+													arrival_time, ticket_price,	plane_id);
 
 --------------------------------------------------------------------------------------------------------------------------
 
+CREATE VIEW available_flights AS 
+	SELECT f.id, f.departure_city, f.arrival_city, f.departure_time, f.arrival_time, 
+		f.ticket_price, p.model, CASE WHEN av.seats_left IS NULL THEN p.seats ELSE av.seats_left END AS seats
+	FROM flights f
+	JOIN planes p ON f.plane_id = p.id
+	LEFT JOIN available_seats av ON av.flight_id = f.id
+	WHERE av.seats_left > 0;
+					
+-----------------------------------------------
+
 CREATE OR REPLACE VIEW join_all_tables AS 
 	SELECT ti.id, f.departure_city, f.arrival_city, f.departure_time, f.arrival_time, p.fio, p.passport, 
-			pl.model, f.ticket_price,  ti.payment_method, ti.purchase_time 
+		pl.model, f.ticket_price,  ti.payment_method, ti.purchase_time 
 	FROM tickets ti 
 	JOIN flights f ON f.id = ti.flight_id  
 	JOIN planes pl ON pl.id = ti.plane_id

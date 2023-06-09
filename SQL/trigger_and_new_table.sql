@@ -5,7 +5,7 @@ CREATE TABLE available_seats
 );
 
 -----------------------------------------------------------
-CREATE OR REPLACE FUNCTION trigger_func()
+CREATE OR REPLACE FUNCTION trig_ticket_operation()
 RETURNS TRIGGER AS
 $$
 BEGIN
@@ -17,8 +17,6 @@ BEGIN
 		END IF;
 	ELSEIF TG_OP = 'DELETE' THEN
 		UPDATE available_seats  SET seats_left = seats_left + 1 WHERE flight_id = OLD.flight_id;
--- 	ELSEIF TG_OP = 'UPDATE' THEN
--- 		INSERT INTO available_seats ...;
 	END IF;
 	RETURN NULL;
 END;
@@ -27,7 +25,7 @@ $$ LANGUAGE plpgsql;
 -------------------------------------------------------
 CREATE TRIGGER seat_counter AFTER INSERT OR UPDATE OR DELETE
 ON tickets FOR EACH ROW
-EXECUTE PROCEDURE trigger_func();
+EXECUTE PROCEDURE trig_ticket_operation();
 
 
-SELECT * from available_seats
+--SELECT * from available_seats;
