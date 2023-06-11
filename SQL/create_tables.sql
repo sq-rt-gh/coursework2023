@@ -37,12 +37,18 @@ CREATE TABLE tickets
 	passenger_id INT,
 	CONSTRAINT FK_ticket_passenger FOREIGN KEY(passenger_id) REFERENCES passengers(id)
 );
+-------------------------------------------
+CREATE TABLE available_seats
+(
+	flight_id INT NOT NULL PRIMARY KEY,
+	seats_left INT
+);
 
 --------------------------------------------------------------------------------------------------------------------------
 
-CREATE INDEX planes_model_index ON planes (model);
-CREATE UNIQUE INDEX unique_passport_index ON passengers (passport);
-CREATE UNIQUE INDEX unique_flights_index ON flights(departure_city, arrival_city, departure_time, 
+CREATE INDEX planes_model_idx ON planes USING HASH(model);
+CREATE UNIQUE INDEX unique_passport_idx ON passengers (passport);
+CREATE UNIQUE INDEX unique_flight_idx ON flights(departure_city, arrival_city, departure_time, 
 													arrival_time, ticket_price,	plane_id);
 
 --------------------------------------------------------------------------------------------------------------------------
