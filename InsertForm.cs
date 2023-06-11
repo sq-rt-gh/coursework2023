@@ -392,9 +392,10 @@ namespace ClientApp
             textBox3.Name = "textBox3";
             textBox3.Size = new System.Drawing.Size(100, 30);
             textBox3.TabIndex = 7;
-
+            textBox3.Text = "admin app";
             //
-
+            //
+            //
             Controls.Add(textBox3);
             Controls.Add(textBox2);
             Controls.Add(label3);
