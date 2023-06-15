@@ -77,11 +77,11 @@ $$ LANGUAGE plpgsql;
 -------------------------------------------ИНДЕКСЫ----------------------------------------
 
 
-SELECT * FROM planes WHERE model = 'Ил-96';
+EXPLAIN SELECT * FROM planes WHERE model = 'Ил-96';
 
-SELECT * FROM passengers WHERE passport = '1234567890';
+EXPLAIN SELECT * FROM passengers WHERE passport = '1234567890';
 
-SELECT * FROM flights WHERE departure_city = 'Москва' AND ticket_price <= 5000;
+EXPLAIN SELECT * FROM flights WHERE departure_city = 'Москва' AND ticket_price <= 5000;
 
 
 -----------------------------------------Группировка--------------------------------------------
